@@ -33,9 +33,13 @@ def findColor(img, myColors, myColorValues):
         count += 1
         #cv2.imshow(str(color[0]), mask)
     return newPoints
-        
+
 def getContours(img):
-    _, contours, _= cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    # _, contours, _= cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    if cv2.__version__.startswith('3'):
+        _, contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    else:
+        contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     #contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     x, y, w, h = 0, 0, 0, 0
     for cnt in contours:
@@ -50,7 +54,7 @@ def getContours(img):
 def drawOnCanvas(myPoints, myColorValues):
     for point in myPoints:
         cv2.circle(imgResult, (point[0], point[1]), 10, myColorValues[point[2]], cv2.FILLED)
-        
+
 
 while True:
     success, img = cap.read()
